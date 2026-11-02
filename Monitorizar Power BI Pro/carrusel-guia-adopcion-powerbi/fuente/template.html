@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Data Analytics · Tribu Power BI (guía de adopción)</title>
+<style>
+  @font-face{font-family:'Montserrat';font-weight:600;src:url('assets/fonts/Montserrat-600.ttf')}
+  @font-face{font-family:'Montserrat';font-weight:700;src:url('assets/fonts/Montserrat-700.ttf')}
+  @font-face{font-family:'Montserrat';font-weight:800;src:url('assets/fonts/Montserrat-800.ttf')}
+  @font-face{font-family:'Montserrat';font-weight:900;src:url('assets/fonts/Montserrat-900.ttf')}
+  @font-face{font-family:'Nunito Sans';font-weight:400;src:url('assets/fonts/NunitoSans-400.ttf')}
+  @font-face{font-family:'Nunito Sans';font-weight:600;src:url('assets/fonts/NunitoSans-600.ttf')}
+  @font-face{font-family:'Nunito Sans';font-weight:700;src:url('assets/fonts/NunitoSans-700.ttf')}
+  @font-face{font-family:'Nunito Sans';font-weight:800;src:url('assets/fonts/NunitoSans-800.ttf')}
+  @font-face{font-family:'Inconsolata';font-weight:500;src:url('assets/fonts/Inconsolata-600.ttf')}
+  @font-face{font-family:'Inconsolata';font-weight:700;src:url('assets/fonts/Inconsolata-700.ttf')}
+
+  :root{
+    --neutrals-000:#ffffff;--neutrals-100:#f3f3f3;--neutrals-200:#dedede;--neutrals-300:#c4c4c4;
+    --neutrals-400:#ababab;--neutrals-500:#919191;--neutrals-600:#787878;--neutrals-700:#5e5e5e;
+    --neutrals-800:#454545;--neutrals-900:#2b2b2b;--neutrals-950:#131313;
+    --coral-100:#ffedeb;--coral-200:#ffc0b8;--coral-300:#ffaa9e;--coral-400:#ff7d6b;--coral-500:#ff5038;
+    --yema-500:#ffad32;
+    --cielo-100:#d4eafa;
+    --gradient-brand:linear-gradient(90deg,#ff5038 0%,#ffad32 100%);
+    --font-display:'Montserrat',sans-serif;--font-sans:'Nunito Sans',sans-serif;--font-mono:'Inconsolata',monospace;
+    --radius-l:16px;--radius-xl:24px;--radius-full:9999px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  @page{size:1080px 1350px;margin:0}
+  html,body{background:#131313}
+  body{font-family:var(--font-sans);-webkit-font-smoothing:antialiased}
+
+  .slide{position:relative;width:1080px;height:1350px;overflow:hidden;display:flex;flex-direction:column;
+    padding:84px 80px 64px;break-after:page;page-break-after:always}
+  .slide.light{background:var(--neutrals-100);color:var(--neutrals-950)}
+  .slide.light::before{content:"";position:absolute;left:0;top:0;right:0;height:10px;background:var(--gradient-brand)}
+  .slide.dark{color:#fff;background-color:#131313;background-repeat:no-repeat}
+
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px}
+  .kicker{font:700 26px/1 var(--font-display);letter-spacing:.12em;text-transform:uppercase;color:var(--coral-500)}
+  .dark .kicker{color:var(--coral-300)}
+  .count{font:700 26px/1 var(--font-display);color:var(--neutrals-500);letter-spacing:.06em}
+  .dark .count{color:rgba(255,255,255,.7)}
+
+  .h1{font:800 76px/1.04 var(--font-display);letter-spacing:-.025em}
+  .grad{background:var(--gradient-brand);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .body{flex:1;display:flex;flex-direction:column;gap:22px;min-height:0;margin-top:44px}
+  .body.center{justify-content:center}
+
+  .foot{display:flex;align-items:center;justify-content:space-between;margin-top:28px;
+    font:600 26px/1 var(--font-sans);color:var(--neutrals-600)}
+  .dark .foot{color:rgba(255,255,255,.75)}
+  .foot .brand{display:flex;align-items:center;gap:16px}
+  .foot img{height:44px;width:auto}
+  .foot .next{display:flex;align-items:center;gap:10px;font:700 26px/1 var(--font-display);color:var(--coral-500)}
+  .dark .foot .next{color:var(--coral-300)}
+
+  .ico{display:inline-block;flex-shrink:0;width:36px;height:36px}
+  .ico svg{display:block;width:100%;height:100%}
+  .iconbox{width:96px;height:96px;border-radius:var(--radius-full);background:var(--coral-100);color:var(--coral-500);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .iconbox .ico{width:48px;height:48px}
+
+  .card{background:#fff;border:1px solid var(--neutrals-200);border-radius:var(--radius-l);padding:28px 36px}
+  .glass{background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(19,19,19,.40) 60%);
+    backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+    border:1px solid rgba(255,255,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.32);
+    border-radius:var(--radius-xl);padding:28px 36px}
+  .row{display:flex;align-items:center;gap:30px}
+
+  .tag{font:700 24px/1 var(--font-display);letter-spacing:.08em;text-transform:uppercase;color:var(--coral-500);margin-bottom:10px}
+  .dark .tag{color:var(--coral-300)}
+  .h3{font:800 40px/1.15 var(--font-display);letter-spacing:-.01em}
+  .p{font:400 30px/1.4 var(--font-sans);color:var(--neutrals-700)}
+  .dark .p{color:rgba(255,255,255,.9)}
+  .note{font:600 26px/1.35 var(--font-sans);color:var(--neutrals-600)}
+  .dark .note{color:rgba(255,255,255,.78)}
+
+  .chip{display:inline-block;font:700 26px/1 var(--font-mono);background:var(--neutrals-100);color:var(--coral-500);
+    border:1px solid var(--neutrals-200);border-radius:8px;padding:7px 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .formula{margin:14px 0 12px}
+
+  .num{font:900 60px/1 var(--font-display);flex-shrink:0;width:86px}
+  .item{display:flex;align-items:flex-start;gap:26px}
+  .item .p{margin-top:6px}
+
+  .fam{display:flex;gap:26px;align-items:center;padding:16px 30px}
+  .fam .iconbox{width:76px;height:76px}
+  .fam .iconbox .ico{width:40px;height:40px}
+  .fam .h3{font-size:34px}
+  .fam .p{font-size:28px;margin:2px 0 8px}
+  .fam .chip{font-size:24px;padding:4px 10px}
+
+  .badge{font:800 30px/1 var(--font-sans);letter-spacing:.05em;padding:10px 0;width:84px;text-align:center;border-radius:8px;flex-shrink:0}
+  .badge.no{background:var(--coral-100);color:var(--coral-500)}
+  .badge.yes{background:var(--cielo-100);color:#0066b8}
+  .usage{display:flex;gap:26px;align-items:flex-start;padding:34px 36px}
+  .usage .t{font:800 36px/1.25 var(--font-sans);color:var(--neutrals-950)}
+  .usage .d{font:400 30px/1.4 var(--font-sans);color:var(--neutrals-700);margin-top:8px}
+
+  .seg{display:flex;align-items:stretch;border-radius:var(--radius-l);overflow:hidden;border:1px solid var(--neutrals-200);background:#fff}
+  .seg .rng{width:250px;display:flex;align-items:center;justify-content:center;font:900 44px/1 var(--font-display);flex-shrink:0}
+  .seg .txt{padding:22px 32px}
+  .seg .h3{font-size:36px}
+  .seg .p{font-size:30px;color:var(--neutrals-700);margin-top:6px}
+
+  .kpi .h3{font-size:38px}
+  .kpi .chip{font-size:28px}
+
+  .check{display:flex;align-items:center;gap:18px;font:600 30px/1.3 var(--font-sans);color:var(--neutrals-800);padding:12px 0}
+  .check .ico{width:34px;height:34px;color:var(--coral-500)}
+  .dark .check{color:rgba(255,255,255,.92)}
+
+  /* 01 portada */
+  .s01{background-image:url('assets/patterns/fractal-glass-06.jpg');background-size:auto 135%;background-position:50% 0}
+  .s01 .logo{width:280px;height:auto}
+  .s01 .h1{font-size:100px;line-height:1.02;margin-top:96px;max-width:920px}
+  .s01 .lead{margin-top:36px;max-width:900px;font:400 36px/1.4 var(--font-sans);color:rgba(255,255,255,.9)}
+  .s01 .pill{margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:16px;border-radius:var(--radius-full);
+    padding:22px 36px;font:700 30px/1 var(--font-display)}
+  .s01 .pill .ico{width:34px;height:34px}
+
+  /* 03 fuentes */
+  .s03{background-image:linear-gradient(180deg,rgba(19,19,19,.35) 0%,rgba(19,19,19,.85) 100%),url('assets/patterns/fractal-glass-02.jpg');
+    background-size:100% 100%,auto 100%;background-position:0 0,0% 0}
+
+  /* 05 arquitectura */
+  .s05{background-image:linear-gradient(180deg,rgba(19,19,19,.55) 0%,rgba(19,19,19,.9) 60%),url('assets/patterns/fractal-glass-13.jpg');
+    background-size:100% 100%,auto 100%;background-position:0 0,100% 0}
+  .s05 .num{color:var(--coral-300)}
+
+  /* 07 segmentación */
+  .s07{background-image:linear-gradient(180deg,rgba(19,19,19,.45) 0%,rgba(19,19,19,.9) 70%),url('assets/patterns/fractal-glass-06.jpg');
+    background-size:100% 100%,auto 100%;background-position:0 0,50% 0}
+
+  /* 09 cierre */
+  .s09{background-image:linear-gradient(180deg,rgba(19,19,19,.55) 0%,rgba(19,19,19,.0) 35%),url('assets/patterns/fractal-glass-13.jpg');
+    background-size:100% 100%,auto 100%;background-position:0 0,0% 0}
+  .s09 .logo{width:300px;height:auto}
+</style>
+</head>
+<body>
+
+<!-- 01 PORTADA -->
+<section class="slide dark s01">
+  <div class="top" style="margin-bottom:0">
+    <span class="kicker">Power BI · Guía de adopción</span>
+    <img class="logo" src="assets/logo/civica-negativo.svg" alt="Cívica · People Beyond Tech">
+  </div>
+  <h1 class="h1">Monitorizar la adopción de <span class="grad">Power BI</span></h1>
+  <p class="lead">Qué medir, de dónde sale el dato y qué decisiones permite tomar.</p>
+  <div class="pill glass">Desliza para verlo <span class="ico">{{icon:ArrowFatRight}}</span></div>
+</section>
+
+<!-- 02 QUÉ MEDIR -->
+<section class="slide light">
+  <div class="top"><span class="kicker">01 · Qué medir</span><span class="count">02/09</span></div>
+  <h2 class="h1">Tres preguntas que el monitor <span class="grad">responde</span></h2>
+  <div class="body center">
+    <div class="card row" style="padding:40px 40px"><span class="iconbox"><span class="ico">{{icon:Users}}</span></span><div><div class="tag">Usuarios</div><div class="p">¿Quién entra, con qué frecuencia y en qué informes?</div></div></div>
+    <div class="card row" style="padding:40px 40px"><span class="iconbox"><span class="ico">{{icon:Folder}}</span></span><div><div class="tag">Contenido</div><div class="p">¿Qué espacios de trabajo y modelos existen, y cuáles no usa nadie?</div></div></div>
+    <div class="card row" style="padding:40px 40px"><span class="iconbox"><span class="ico">{{icon:ShareNetwork}}</span></span><div><div class="tag">Exportaciones</div><div class="p">¿Qué datos salen de la plataforma, desde qué informe y con qué frecuencia?</div></div></div>
+    <p class="note" style="font-size:30px;margin-top:10px">Sin estas respuestas, renovar, reasignar o dar de baja una licencia se decide a ojo.</p>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px">{{icon:ArrowFatRight}}</span></span></div>
+</section>
+
+<!-- 03 FUENTES -->
+<section class="slide dark s03">
+  <div class="top"><span class="kicker">02 · Fuentes</span><span class="count">03/09</span></div>
+  <h2 class="h1">Tres fuentes, <span class="grad">tres preguntas</span></h2>
+  <div class="body center" style="gap:20px">
+    <div class="glass item"><span class="num grad">01</span><div><div class="h3">Activity Log</div><div class="p">¿Qué ha ocurrido? Quién hizo qué, cuándo y dónde.</div></div></div>
+    <div class="glass item"><span class="num grad">02</span><div><div class="h3">Scanner API</div><div class="p">¿Qué existe? Espacios de trabajo, informes, modelos, propietarios y etiquetas.</div></div></div>
+    <div class="glass item"><span class="num grad">03</span><div><div class="h3">Microsoft Graph</div><div class="p">¿Quién tiene licencia? Usuarios y licencias asignadas.</div></div></div>
+    <p class="note" style="margin-top:8px">El Activity Log solo registra acciones. Lo que nadie abre no aparece en él.</p>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo-negativo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px">{{icon:ArrowFatRight}}</span></span></div>
+</section>
+
+<!-- 04 EVENTOS -->
+<section class="slide light">
+  <div class="top"><span class="kicker">03 · Eventos</span><span class="count">04/09</span></div>
+  <h2 class="h1">Cinco familias de <span class="grad">eventos</span></h2>
+  <div class="body center" style="gap:14px;margin-top:28px">
+    <div class="card fam"><span class="iconbox"><span class="ico">{{icon:ChartBar}}</span></span><div><div class="h3">Consumo</div><div class="p">¿Quién usa qué?</div><div class="chips"><span class="chip">ViewReport</span><span class="chip">ViewDashboard</span></div></div></div>
+    <div class="card fam"><span class="iconbox"><span class="ico">{{icon:PencilSimple}}</span></span><div><div class="h3">Creación</div><div class="p">¿Quién crea y quién solo consume?</div><div class="chips"><span class="chip">CreateReport</span><span class="chip">EditReport</span></div></div></div>
+    <div class="card fam"><span class="iconbox"><span class="ico">{{icon:ArrowsClockwise}}</span></span><div><div class="h3">Modelos</div><div class="p">¿Se actualizan los datos?</div><div class="chips"><span class="chip">RefreshDataset</span></div></div></div>
+    <div class="card fam"><span class="iconbox"><span class="ico">{{icon:ShareNetwork}}</span></span><div><div class="h3">Exportación y difusión</div><div class="p">¿Qué sale de Power BI?</div><div class="chips"><span class="chip">ExportArtifact</span><span class="chip">ShareReport</span></div></div></div>
+    <div class="card fam"><span class="iconbox"><span class="ico">{{icon:LockKey}}</span></span><div><div class="h3">Espacios de trabajo y permisos</div><div class="p">¿Quién tiene acceso a qué?</div><div class="chips"><span class="chip">CreateWorkspace</span><span class="chip">UpdateWorkspaceAccess</span></div></div></div>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px">{{icon:ArrowFatRight}}</span></span></div>
+</section>
+
+<!-- 05 ARQUITECTURA -->
+<section class="slide dark s05">
+  <div class="top"><span class="kicker">04 · Diseño de solución</span><span class="count">05/09</span></div>
+  <h2 class="h1">Tres pasos <span class="grad">desatendidos</span></h2>
+  <div class="body center" style="gap:20px">
+    <div class="glass item"><span class="num">01</span><div><div class="h3">Extrae</div><div class="p">Un script programado descarga la actividad del día y pagina con el token de la API.</div></div></div>
+    <div class="glass item"><span class="num">02</span><div><div class="h3">Guarda</div><div class="p">Un fichero por día en Blob Storage o SharePoint.</div></div></div>
+    <div class="glass item"><span class="num">03</span><div><div class="h3">Modela</div><div class="p">Un modelo en estrella en Power BI, con actualización programada.</div></div></div>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo-negativo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px">{{icon:ArrowFatRight}}</span></span></div>
+</section>
+
+<!-- 06 CONTENIDO SIN USO -->
+<section class="slide light">
+  <div class="top"><span class="kicker">05 · Scanner API</span><span class="count">06/09</span></div>
+  <h2 class="h1">El log no muestra lo que <span class="grad">nadie abre</span></h2>
+  <div class="body center" style="gap:22px">
+    <div class="card usage"><span class="badge no">NO</span><div><div class="t">Usar solo el Activity Log como inventario</div><div class="d">Lo que nadie abre no aparece en él.</div></div></div>
+    <div class="card usage"><span class="badge yes">SÍ</span><div><div class="t">Cruzarlo con la Scanner API</div><div class="d">Lista todo el contenido, se use o no.</div></div></div>
+    <p class="note" style="font-size:30px;margin-top:10px">Así se localizan los espacios de trabajo y modelos sin uso.</p>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px">{{icon:ArrowFatRight}}</span></span></div>
+</section>
+
+<!-- 07 SEGMENTACIÓN -->
+<section class="slide dark s07">
+  <div class="top"><span class="kicker">06 · Segmentación</span><span class="count">07/09</span></div>
+  <h2 class="h1">Cuatro perfiles de <span class="grad">usuario</span></h2>
+  <div class="body center" style="gap:18px">
+    <div class="seg"><div class="rng" style="background:var(--coral-500);color:#fff">7 d</div><div class="txt"><div class="h3">Frecuente</div><div class="p">Actividad en los últimos 7 días o menos.</div></div></div>
+    <div class="seg"><div class="rng" style="background:var(--coral-400);color:#fff">8–30 d</div><div class="txt"><div class="h3">Ocasional</div><div class="p">Actividad entre 8 y 30 días.</div></div></div>
+    <div class="seg"><div class="rng" style="background:var(--coral-200);color:var(--neutrals-950)">31–90 d</div><div class="txt"><div class="h3">Dormido</div><div class="p">Sin actividad entre 31 y 90 días.</div></div></div>
+    <div class="seg"><div class="rng" style="background:var(--coral-100);color:var(--coral-500)">&gt; 90 d</div><div class="txt"><div class="h3">Inactivo</div><div class="p">Más de 90 días sin actividad, o nunca.</div></div></div>
+    <p class="note" style="margin-top:6px">Umbrales orientativos: ajústalos a cada organización.</p>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo-negativo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px">{{icon:ArrowFatRight}}</span></span></div>
+</section>
+
+<!-- 08 INDICADORES -->
+<section class="slide light">
+  <div class="top"><span class="kicker">07 · Indicadores</span><span class="count">08/09</span></div>
+  <h2 class="h1">Tres indicadores que <span class="grad">cambian decisiones</span></h2>
+  <div class="body center" style="gap:22px">
+    <div class="card kpi"><div class="h3">Espacios de trabajo sin uso</div><div class="formula"><span class="chip">0 visualizaciones en 60 días</span></div><div class="p">Para archivar o reasignar.</div></div>
+    <div class="card kpi"><div class="h3">Distribución por Apps</div><div class="formula"><span class="chip">vistas en Apps ÷ vistas totales</span></div><div class="p">Muestra si el consumo va por canales gestionados.</div></div>
+    <div class="card kpi"><div class="h3">Ratio de exportación</div><div class="formula"><span class="chip">ExportArtifact ÷ ViewReport</span></div><div class="p">Si sube, el informe no responde la pregunta.</div></div>
+    <p class="note">Propuestas de gestión, no un estándar de Microsoft.</p>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px">{{icon:ArrowFatRight}}</span></span></div>
+</section>
+
+<!-- 09 PARA EMPEZAR (CIERRE) -->
+<section class="slide dark s09">
+  <div class="top"><span class="kicker">08 · Próximos pasos</span><span class="count">09/09</span></div>
+  <h2 class="h1">Para empezar, <span class="grad">una pregunta</span></h2>
+  <div class="body" style="gap:26px;margin-top:40px">
+    <div class="glass" style="padding:36px 40px"><div style="font:800 52px/1.15 var(--font-display);letter-spacing:-.01em">¿Cuántas licencias llevan más de 90 días sin actividad?</div></div>
+    <div class="glass" style="padding:14px 36px 16px">
+      <div class="check"><span class="ico">{{icon:ShieldCheck}}</span> Activar el acceso de solo lectura para entidades de servicio</div>
+      <div class="check"><span class="ico">{{icon:Clock}}</span> Programar la extracción diaria del Activity Log</div>
+      <div class="check"><span class="ico">{{icon:Graph}}</span> Cruzarlo con la Scanner API y Microsoft Graph</div>
+    </div>
+    <p class="note" style="font-size:22px">Referencias: Track user activities in Power BI · Metadata scanning overview · Admin - Get Activity Events</p>
+  </div>
+  <div class="foot" style="margin-top:28px">
+    <span class="brand"><img src="assets/logo/civica-isotipo-negativo.svg" alt="">Data Analytics · Tribu Power BI</span>
+    <img class="logo" src="assets/logo/civica-negativo.svg" alt="Cívica · People Beyond Tech">
+  </div>
+</section>
+
+<script>
+  var n = new URLSearchParams(location.search).get('n');
+  if (n) document.querySelectorAll('.slide').forEach(function(s,i){ if (i+1 !== +n) s.remove(); });
+</script>
+</body>
+</html>

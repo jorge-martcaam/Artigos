@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Data Analytics · Tribu Power BI (guía de adopción)</title>
+<style>
+  @font-face{font-family:'Montserrat';font-weight:600;src:url('assets/fonts/Montserrat-600.ttf')}
+  @font-face{font-family:'Montserrat';font-weight:700;src:url('assets/fonts/Montserrat-700.ttf')}
+  @font-face{font-family:'Montserrat';font-weight:800;src:url('assets/fonts/Montserrat-800.ttf')}
+  @font-face{font-family:'Montserrat';font-weight:900;src:url('assets/fonts/Montserrat-900.ttf')}
+  @font-face{font-family:'Nunito Sans';font-weight:400;src:url('assets/fonts/NunitoSans-400.ttf')}
+  @font-face{font-family:'Nunito Sans';font-weight:600;src:url('assets/fonts/NunitoSans-600.ttf')}
+  @font-face{font-family:'Nunito Sans';font-weight:700;src:url('assets/fonts/NunitoSans-700.ttf')}
+  @font-face{font-family:'Nunito Sans';font-weight:800;src:url('assets/fonts/NunitoSans-800.ttf')}
+  @font-face{font-family:'Inconsolata';font-weight:500;src:url('assets/fonts/Inconsolata-600.ttf')}
+  @font-face{font-family:'Inconsolata';font-weight:700;src:url('assets/fonts/Inconsolata-700.ttf')}
+
+  :root{
+    --neutrals-000:#ffffff;--neutrals-100:#f3f3f3;--neutrals-200:#dedede;--neutrals-300:#c4c4c4;
+    --neutrals-400:#ababab;--neutrals-500:#919191;--neutrals-600:#787878;--neutrals-700:#5e5e5e;
+    --neutrals-800:#454545;--neutrals-900:#2b2b2b;--neutrals-950:#131313;
+    --coral-100:#ffedeb;--coral-200:#ffc0b8;--coral-300:#ffaa9e;--coral-400:#ff7d6b;--coral-500:#ff5038;
+    --yema-500:#ffad32;
+    --cielo-100:#d4eafa;
+    --gradient-brand:linear-gradient(90deg,#ff5038 0%,#ffad32 100%);
+    --font-display:'Montserrat',sans-serif;--font-sans:'Nunito Sans',sans-serif;--font-mono:'Inconsolata',monospace;
+    --radius-l:16px;--radius-xl:24px;--radius-full:9999px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  @page{size:1080px 1350px;margin:0}
+  html,body{background:#131313}
+  body{font-family:var(--font-sans);-webkit-font-smoothing:antialiased}
+
+  .slide{position:relative;width:1080px;height:1350px;overflow:hidden;display:flex;flex-direction:column;
+    padding:84px 80px 64px;break-after:page;page-break-after:always}
+  .slide.light{background:var(--neutrals-100);color:var(--neutrals-950)}
+  .slide.light::before{content:"";position:absolute;left:0;top:0;right:0;height:10px;background:var(--gradient-brand)}
+  .slide.dark{color:#fff;background-color:#131313;background-repeat:no-repeat}
+
+  .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px}
+  .kicker{font:700 26px/1 var(--font-display);letter-spacing:.12em;text-transform:uppercase;color:var(--coral-500)}
+  .dark .kicker{color:var(--coral-300)}
+  .count{font:700 26px/1 var(--font-display);color:var(--neutrals-500);letter-spacing:.06em}
+  .dark .count{color:rgba(255,255,255,.7)}
+
+  .h1{font:800 76px/1.04 var(--font-display);letter-spacing:-.025em}
+  .grad{background:var(--gradient-brand);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .body{flex:1;display:flex;flex-direction:column;gap:22px;min-height:0;margin-top:44px}
+  .body.center{justify-content:center}
+
+  .foot{display:flex;align-items:center;justify-content:space-between;margin-top:28px;
+    font:600 26px/1 var(--font-sans);color:var(--neutrals-600)}
+  .dark .foot{color:rgba(255,255,255,.75)}
+  .foot .brand{display:flex;align-items:center;gap:16px}
+  .foot img{height:44px;width:auto}
+  .foot .next{display:flex;align-items:center;gap:10px;font:700 26px/1 var(--font-display);color:var(--coral-500)}
+  .dark .foot .next{color:var(--coral-300)}
+
+  .ico{display:inline-block;flex-shrink:0;width:36px;height:36px}
+  .ico svg{display:block;width:100%;height:100%}
+  .iconbox{width:96px;height:96px;border-radius:var(--radius-full);background:var(--coral-100);color:var(--coral-500);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0}
+  .iconbox .ico{width:48px;height:48px}
+
+  .card{background:#fff;border:1px solid var(--neutrals-200);border-radius:var(--radius-l);padding:28px 36px}
+  .glass{background:linear-gradient(135deg,rgba(255,255,255,.16),rgba(19,19,19,.40) 60%);
+    backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
+    border:1px solid rgba(255,255,255,.28);box-shadow:inset 0 1px 0 rgba(255,255,255,.32);
+    border-radius:var(--radius-xl);padding:28px 36px}
+  .row{display:flex;align-items:center;gap:30px}
+
+  .tag{font:700 24px/1 var(--font-display);letter-spacing:.08em;text-transform:uppercase;color:var(--coral-500);margin-bottom:10px}
+  .dark .tag{color:var(--coral-300)}
+  .h3{font:800 40px/1.15 var(--font-display);letter-spacing:-.01em}
+  .p{font:400 30px/1.4 var(--font-sans);color:var(--neutrals-700)}
+  .dark .p{color:rgba(255,255,255,.9)}
+  .note{font:600 26px/1.35 var(--font-sans);color:var(--neutrals-600)}
+  .dark .note{color:rgba(255,255,255,.78)}
+
+  .chip{display:inline-block;font:700 26px/1 var(--font-mono);background:var(--neutrals-100);color:var(--coral-500);
+    border:1px solid var(--neutrals-200);border-radius:8px;padding:7px 12px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px}
+  .formula{margin:14px 0 12px}
+
+  .num{font:900 60px/1 var(--font-display);flex-shrink:0;width:86px}
+  .item{display:flex;align-items:flex-start;gap:26px}
+  .item .p{margin-top:6px}
+
+  .fam{display:flex;gap:26px;align-items:center;padding:16px 30px}
+  .fam .iconbox{width:76px;height:76px}
+  .fam .iconbox .ico{width:40px;height:40px}
+  .fam .h3{font-size:34px}
+  .fam .p{font-size:28px;margin:2px 0 8px}
+  .fam .chip{font-size:24px;padding:4px 10px}
+
+  .badge{font:800 30px/1 var(--font-sans);letter-spacing:.05em;padding:10px 0;width:84px;text-align:center;border-radius:8px;flex-shrink:0}
+  .badge.no{background:var(--coral-100);color:var(--coral-500)}
+  .badge.yes{background:var(--cielo-100);color:#0066b8}
+  .usage{display:flex;gap:26px;align-items:flex-start;padding:34px 36px}
+  .usage .t{font:800 36px/1.25 var(--font-sans);color:var(--neutrals-950)}
+  .usage .d{font:400 30px/1.4 var(--font-sans);color:var(--neutrals-700);margin-top:8px}
+
+  .seg{display:flex;align-items:stretch;border-radius:var(--radius-l);overflow:hidden;border:1px solid var(--neutrals-200);background:#fff}
+  .seg .rng{width:250px;display:flex;align-items:center;justify-content:center;font:900 44px/1 var(--font-display);flex-shrink:0}
+  .seg .txt{padding:22px 32px}
+  .seg .h3{font-size:36px}
+  .seg .p{font-size:30px;color:var(--neutrals-700);margin-top:6px}
+
+  .kpi .h3{font-size:38px}
+  .kpi .chip{font-size:28px}
+
+  .check{display:flex;align-items:center;gap:18px;font:600 30px/1.3 var(--font-sans);color:var(--neutrals-800);padding:12px 0}
+  .check .ico{width:34px;height:34px;color:var(--coral-500)}
+  .dark .check{color:rgba(255,255,255,.92)}
+
+  /* 01 portada */
+  .s01{background-image:url('assets/patterns/fractal-glass-06.jpg');background-size:auto 135%;background-position:50% 0}
+  .s01 .logo{width:280px;height:auto}
+  .s01 .h1{font-size:100px;line-height:1.02;margin-top:96px;max-width:920px}
+  .s01 .lead{margin-top:36px;max-width:900px;font:400 36px/1.4 var(--font-sans);color:rgba(255,255,255,.9)}
+  .s01 .pill{margin-top:auto;align-self:flex-start;display:flex;align-items:center;gap:16px;border-radius:var(--radius-full);
+    padding:22px 36px;font:700 30px/1 var(--font-display)}
+  .s01 .pill .ico{width:34px;height:34px}
+
+  /* 03 fuentes */
+  .s03{background-image:linear-gradient(180deg,rgba(19,19,19,.35) 0%,rgba(19,19,19,.85) 100%),url('assets/patterns/fractal-glass-02.jpg');
+    background-size:100% 100%,auto 100%;background-position:0 0,0% 0}
+
+  /* 05 arquitectura */
+  .s05{background-image:linear-gradient(180deg,rgba(19,19,19,.55) 0%,rgba(19,19,19,.9) 60%),url('assets/patterns/fractal-glass-13.jpg');
+    background-size:100% 100%,auto 100%;background-position:0 0,100% 0}
+  .s05 .num{color:var(--coral-300)}
+
+  /* 07 segmentación */
+  .s07{background-image:linear-gradient(180deg,rgba(19,19,19,.45) 0%,rgba(19,19,19,.9) 70%),url('assets/patterns/fractal-glass-06.jpg');
+    background-size:100% 100%,auto 100%;background-position:0 0,50% 0}
+
+  /* 09 cierre */
+  .s09{background-image:linear-gradient(180deg,rgba(19,19,19,.55) 0%,rgba(19,19,19,.0) 35%),url('assets/patterns/fractal-glass-13.jpg');
+    background-size:100% 100%,auto 100%;background-position:0 0,0% 0}
+  .s09 .logo{width:300px;height:auto}
+</style>
+</head>
+<body>
+
+<!-- 01 PORTADA -->
+<section class="slide dark s01">
+  <div class="top" style="margin-bottom:0">
+    <span class="kicker">Power BI · Guía de adopción</span>
+    <img class="logo" src="assets/logo/civica-negativo.svg" alt="Cívica · People Beyond Tech">
+  </div>
+  <h1 class="h1">Monitorizar la adopción de <span class="grad">Power BI</span></h1>
+  <p class="lead">Qué medir, de dónde sale el dato y qué decisiones permite tomar.</p>
+  <div class="pill glass">Desliza para verlo <span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="425.44 183.42 29.13 29.16" aria-hidden="true"><path d="M439.618 210.924C439.435 210.848 439.279 210.72 439.169 210.556C439.059 210.391 439 210.198 439 210V205H429C428.47 205 427.961 204.789 427.586 204.414C427.211 204.039 427 203.53 427 203V193C427 192.47 427.211 191.961 427.586 191.586C427.961 191.211 428.47 191 429 191H439V186C439 185.802 439.058 185.609 439.168 185.444C439.278 185.279 439.434 185.151 439.617 185.075C439.8 185 440.001 184.98 440.195 185.019C440.389 185.057 440.568 185.153 440.708 185.293L452.708 197.293C452.8 197.385 452.874 197.496 452.925 197.617C452.975 197.739 453.001 197.869 453.001 198C453.001 198.131 452.975 198.262 452.925 198.383C452.874 198.504 452.8 198.615 452.708 198.708L440.708 210.708C440.568 210.847 440.389 210.943 440.195 210.981C440.001 211.02 439.8 211 439.618 210.924Z" fill="currentColor"/></svg></span></div>
+</section>
+
+<!-- 02 QUÉ MEDIR -->
+<section class="slide light">
+  <div class="top"><span class="kicker">01 · Qué medir</span><span class="count">02/09</span></div>
+  <h2 class="h1">Tres preguntas que el monitor <span class="grad">responde</span></h2>
+  <div class="body center">
+    <div class="card row" style="padding:40px 40px"><span class="iconbox"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="222.38 94.40 35.24 23.99" aria-hidden="true"><path d="M244.559 114.954C244.657 115.105 244.713 115.279 244.72 115.459C244.728 115.639 244.686 115.818 244.6 115.976C244.515 116.135 244.388 116.267 244.233 116.359C244.078 116.451 243.901 116.5 243.721 116.5H225.279C225.099 116.5 224.922 116.451 224.767 116.359C224.612 116.267 224.485 116.135 224.4 115.976C224.314 115.818 224.272 115.639 224.28 115.459C224.287 115.279 224.343 115.105 224.441 114.954C225.849 112.787 227.919 111.134 230.344 110.24C229.003 109.348 227.986 108.048 227.442 106.533C226.897 105.017 226.855 103.367 227.321 101.826C227.787 100.285 228.737 98.9346 230.03 97.9749C231.322 97.0152 232.89 96.4971 234.5 96.4971C236.11 96.4971 237.677 97.0152 238.97 97.9749C240.263 98.9346 241.213 100.285 241.679 101.826C242.145 103.367 242.103 105.017 241.558 106.533C241.014 108.048 239.996 109.348 238.656 110.24C241.081 111.134 243.151 112.787 244.559 114.954ZM255.547 114.935C254.139 112.778 252.074 111.131 249.656 110.24C251.238 109.174 252.355 107.546 252.779 105.686C253.202 103.825 252.901 101.874 251.937 100.228C250.972 98.582 249.417 97.3654 247.587 96.8259C245.757 96.2864 243.791 96.4645 242.087 97.3239C242.022 97.3575 241.965 97.405 241.921 97.4631C241.876 97.5212 241.845 97.5884 241.829 97.6599C241.813 97.7315 241.813 97.8057 241.829 97.8772C241.845 97.9487 241.876 98.0159 241.921 98.0739C243.188 99.6536 243.915 101.597 243.997 103.621C244.078 105.644 243.51 107.64 242.375 109.316C242.302 109.426 242.274 109.56 242.3 109.69C242.325 109.819 242.4 109.933 242.509 110.008C243.989 111.04 245.255 112.349 246.24 113.861C246.637 114.469 246.799 115.201 246.696 115.92C246.685 115.992 246.689 116.065 246.708 116.135C246.728 116.204 246.762 116.269 246.809 116.324C246.856 116.379 246.914 116.424 246.98 116.454C247.046 116.484 247.117 116.5 247.19 116.5H254.727C254.948 116.5 255.162 116.428 255.336 116.294C255.511 116.16 255.637 115.972 255.694 115.759C255.728 115.619 255.733 115.473 255.708 115.331C255.683 115.19 255.628 115.054 255.547 114.935Z" fill="currentColor"/></svg></span></span><div><div class="tag">Usuarios</div><div class="p">¿Quién entra, con qué frecuencia y en qué informes?</div></div></div>
+    <div class="card row" style="padding:40px 40px"><span class="iconbox"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="307.44 242.44 29.12 25.12" aria-hidden="true"><path d="M333 248H322.414L319 244.586C318.815 244.4 318.595 244.252 318.352 244.151C318.109 244.051 317.849 243.999 317.586 244H311C310.47 244 309.961 244.211 309.586 244.586C309.211 244.961 309 245.47 309 246V264.078C309.001 264.587 309.204 265.076 309.565 265.436C309.925 265.797 310.414 265.999 310.924 266H333.111C333.612 265.999 334.092 265.8 334.446 265.446C334.8 265.092 334.999 264.612 335 264.111V250C335 249.47 334.789 248.961 334.414 248.586C334.039 248.211 333.53 248 333 248ZM311 246H317.586L319.586 248H311V246Z" fill="currentColor"/></svg></span></span><div><div class="tag">Contenido</div><div class="p">¿Qué espacios de trabajo y modelos existen, y cuáles no usa nadie?</div></div></div>
+    <div class="card row" style="padding:40px 40px"><span class="iconbox"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="170.86 252.72 26.41 30.46" aria-hidden="true"><path d="M195.5 277C195.5 277.657 195.356 278.306 195.079 278.901C194.802 279.496 194.397 280.024 193.894 280.446C193.392 280.869 192.802 281.176 192.168 281.346C191.534 281.517 190.87 281.546 190.223 281.433C189.576 281.319 188.962 281.066 188.423 280.69C187.885 280.313 187.435 279.824 187.106 279.256C186.777 278.687 186.576 278.054 186.518 277.399C186.46 276.745 186.545 276.086 186.769 275.469L180.144 271.212C179.511 271.833 178.709 272.253 177.839 272.42C176.968 272.586 176.068 272.492 175.251 272.149C174.433 271.806 173.736 271.229 173.245 270.491C172.754 269.753 172.493 268.886 172.493 268C172.493 267.114 172.754 266.247 173.245 265.509C173.736 264.771 174.433 264.194 175.251 263.851C176.068 263.508 176.968 263.414 177.839 263.58C178.709 263.747 179.511 264.167 180.144 264.787L186.769 260.537C186.389 259.495 186.408 258.349 186.819 257.319C187.231 256.289 188.008 255.447 189.002 254.954C189.996 254.461 191.136 254.351 192.206 254.645C193.275 254.94 194.199 255.618 194.8 256.55C195.401 257.483 195.637 258.604 195.464 259.7C195.291 260.795 194.72 261.789 193.86 262.49C193 263.191 191.913 263.551 190.804 263.501C189.696 263.451 188.645 262.995 187.853 262.219L181.228 266.475C181.586 267.464 181.586 268.548 181.228 269.537L187.853 273.794C188.485 273.175 189.286 272.756 190.155 272.59C191.025 272.424 191.924 272.518 192.74 272.86C193.556 273.202 194.253 273.777 194.744 274.514C195.235 275.25 195.498 276.115 195.5 277Z" fill="currentColor"/></svg></span></span><div><div class="tag">Exportaciones</div><div class="p">¿Qué datos salen de la plataforma, desde qué informe y con qué frecuencia?</div></div></div>
+    <p class="note" style="font-size:30px;margin-top:10px">Sin estas respuestas, renovar, reasignar o dar de baja una licencia se decide a ojo.</p>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="425.44 183.42 29.13 29.16" aria-hidden="true"><path d="M439.618 210.924C439.435 210.848 439.279 210.72 439.169 210.556C439.059 210.391 439 210.198 439 210V205H429C428.47 205 427.961 204.789 427.586 204.414C427.211 204.039 427 203.53 427 203V193C427 192.47 427.211 191.961 427.586 191.586C427.961 191.211 428.47 191 429 191H439V186C439 185.802 439.058 185.609 439.168 185.444C439.278 185.279 439.434 185.151 439.617 185.075C439.8 185 440.001 184.98 440.195 185.019C440.389 185.057 440.568 185.153 440.708 185.293L452.708 197.293C452.8 197.385 452.874 197.496 452.925 197.617C452.975 197.739 453.001 197.869 453.001 198C453.001 198.131 452.975 198.262 452.925 198.383C452.874 198.504 452.8 198.615 452.708 198.708L440.708 210.708C440.568 210.847 440.389 210.943 440.195 210.981C440.001 211.02 439.8 211 439.618 210.924Z" fill="currentColor"/></svg></span></span></div>
+</section>
+
+<!-- 03 FUENTES -->
+<section class="slide dark s03">
+  <div class="top"><span class="kicker">02 · Fuentes</span><span class="count">03/09</span></div>
+  <h2 class="h1">Tres fuentes, <span class="grad">tres preguntas</span></h2>
+  <div class="body center" style="gap:20px">
+    <div class="glass item"><span class="num grad">01</span><div><div class="h3">Activity Log</div><div class="p">¿Qué ha ocurrido? Quién hizo qué, cuándo y dónde.</div></div></div>
+    <div class="glass item"><span class="num grad">02</span><div><div class="h3">Scanner API</div><div class="p">¿Qué existe? Espacios de trabajo, informes, modelos, propietarios y etiquetas.</div></div></div>
+    <div class="glass item"><span class="num grad">03</span><div><div class="h3">Microsoft Graph</div><div class="p">¿Quién tiene licencia? Usuarios y licencias asignadas.</div></div></div>
+    <p class="note" style="margin-top:8px">El Activity Log solo registra acciones. Lo que nadie abre no aparece en él.</p>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo-negativo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="425.44 183.42 29.13 29.16" aria-hidden="true"><path d="M439.618 210.924C439.435 210.848 439.279 210.72 439.169 210.556C439.059 210.391 439 210.198 439 210V205H429C428.47 205 427.961 204.789 427.586 204.414C427.211 204.039 427 203.53 427 203V193C427 192.47 427.211 191.961 427.586 191.586C427.961 191.211 428.47 191 429 191H439V186C439 185.802 439.058 185.609 439.168 185.444C439.278 185.279 439.434 185.151 439.617 185.075C439.8 185 440.001 184.98 440.195 185.019C440.389 185.057 440.568 185.153 440.708 185.293L452.708 197.293C452.8 197.385 452.874 197.496 452.925 197.617C452.975 197.739 453.001 197.869 453.001 198C453.001 198.131 452.975 198.262 452.925 198.383C452.874 198.504 452.8 198.615 452.708 198.708L440.708 210.708C440.568 210.847 440.389 210.943 440.195 210.981C440.001 211.02 439.8 211 439.618 210.924Z" fill="currentColor"/></svg></span></span></div>
+</section>
+
+<!-- 04 EVENTOS -->
+<section class="slide light">
+  <div class="top"><span class="kicker">03 · Eventos</span><span class="count">04/09</span></div>
+  <h2 class="h1">Cinco familias de <span class="grad">eventos</span></h2>
+  <div class="body center" style="gap:14px;margin-top:28px">
+    <div class="card fam"><span class="iconbox"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="170.44 169.44 29.12 26.12" aria-hidden="true"><path d="M198 193C198 193.265 197.895 193.52 197.707 193.707C197.52 193.895 197.265 194 197 194H173C172.735 194 172.48 193.895 172.293 193.707C172.105 193.52 172 193.265 172 193C172 192.735 172.105 192.48 172.293 192.293C172.48 192.105 172.735 192 173 192H174V184C174 183.735 174.105 183.48 174.293 183.293C174.48 183.105 174.735 183 175 183H178C178.265 183 178.52 183.105 178.707 183.293C178.895 183.48 179 183.735 179 184V192H181V178C181 177.735 181.105 177.48 181.293 177.293C181.48 177.105 181.735 177 182 177H186C186.265 177 186.52 177.105 186.707 177.293C186.895 177.48 187 177.735 187 178V192H189V172C189 171.735 189.105 171.48 189.293 171.293C189.48 171.105 189.735 171 190 171H195C195.265 171 195.52 171.105 195.707 171.293C195.895 171.48 196 171.735 196 172V192H197C197.265 192 197.52 192.105 197.707 192.293C197.895 192.48 198 192.735 198 193Z" fill="currentColor"/></svg></span></span><div><div class="h3">Consumo</div><div class="p">¿Quién usa qué?</div><div class="chips"><span class="chip">ViewReport</span><span class="chip">ViewDashboard</span></div></div></div>
+    <div class="card fam"><span class="iconbox"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="233.50 204.50 28.00 28.00" aria-hidden="true"><path d="M259.414 212.171L253.829 206.585C253.643 206.399 253.423 206.252 253.18 206.151C252.937 206.051 252.677 205.999 252.414 205.999C252.152 205.999 251.892 206.051 251.649 206.151C251.406 206.252 251.186 206.399 251 206.585L235.586 222C235.4 222.185 235.252 222.405 235.151 222.648C235.051 222.891 234.999 223.151 235 223.414V229C235 229.53 235.211 230.039 235.586 230.414C235.961 230.789 236.47 231 237 231H242.586C242.849 231.001 243.109 230.949 243.352 230.849C243.595 230.748 243.815 230.6 244 230.414L259.414 215C259.6 214.814 259.747 214.594 259.847 214.351C259.948 214.108 260 213.848 260 213.586C260 213.323 259.948 213.063 259.847 212.82C259.747 212.577 259.6 212.357 259.414 212.171ZM255 216.585L249.414 211L252.414 208L258 213.585L255 216.585Z" fill="currentColor"/></svg></span></span><div><div class="h3">Creación</div><div class="p">¿Quién crea y quién solo consume?</div><div class="chips"><span class="chip">CreateReport</span><span class="chip">EditReport</span></div></div></div>
+    <div class="card fam"><span class="iconbox"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="169.56 349.79 26.88 26.42" aria-hidden="true"><path d="M195 353V359C195 359.265 194.895 359.519 194.707 359.707C194.52 359.895 194.265 360 194 360H188C187.802 360 187.609 359.942 187.444 359.832C187.279 359.722 187.151 359.566 187.075 359.383C187 359.2 186.98 358.999 187.018 358.805C187.057 358.611 187.152 358.432 187.292 358.292L189.581 356C187.74 354.236 185.291 353.247 182.741 353.239H182.685C180.072 353.234 177.562 354.257 175.699 356.089C175.508 356.267 175.255 356.363 174.993 356.357C174.732 356.351 174.484 356.243 174.301 356.057C174.119 355.87 174.016 355.619 174.016 355.358C174.016 355.096 174.119 354.846 174.301 354.659C176.53 352.481 179.52 351.255 182.636 351.242C185.753 351.229 188.752 352.429 191 354.587L193.295 352.292C193.435 352.153 193.613 352.059 193.807 352.02C194 351.982 194.201 352.002 194.383 352.078C194.566 352.154 194.721 352.282 194.831 352.446C194.941 352.61 195 352.803 195 353ZM190.301 369.911C188.449 371.72 185.967 372.741 183.378 372.757C180.789 372.774 178.294 371.785 176.419 370L178.708 367.711C178.849 367.572 178.945 367.393 178.985 367.198C179.024 367.003 179.005 366.801 178.929 366.618C178.853 366.434 178.724 366.277 178.559 366.167C178.393 366.057 178.199 365.999 178 366H172C171.735 366 171.48 366.105 171.293 366.293C171.105 366.48 171 366.735 171 367V373C171 373.198 171.058 373.391 171.168 373.556C171.278 373.721 171.434 373.849 171.617 373.925C171.8 374 172.001 374.02 172.195 373.981C172.389 373.943 172.568 373.847 172.708 373.707L175 371.412C177.215 373.55 180.171 374.749 183.25 374.757H183.316C186.451 374.766 189.463 373.538 191.7 371.341C191.883 371.154 191.985 370.903 191.985 370.642C191.985 370.381 191.883 370.13 191.7 369.943C191.517 369.756 191.269 369.648 191.008 369.642C190.747 369.636 190.493 369.733 190.302 369.911H190.301Z" fill="currentColor"/></svg></span></span><div><div class="h3">Modelos</div><div class="p">¿Se actualizan los datos?</div><div class="chips"><span class="chip">RefreshDataset</span></div></div></div>
+    <div class="card fam"><span class="iconbox"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="170.86 252.72 26.41 30.46" aria-hidden="true"><path d="M195.5 277C195.5 277.657 195.356 278.306 195.079 278.901C194.802 279.496 194.397 280.024 193.894 280.446C193.392 280.869 192.802 281.176 192.168 281.346C191.534 281.517 190.87 281.546 190.223 281.433C189.576 281.319 188.962 281.066 188.423 280.69C187.885 280.313 187.435 279.824 187.106 279.256C186.777 278.687 186.576 278.054 186.518 277.399C186.46 276.745 186.545 276.086 186.769 275.469L180.144 271.212C179.511 271.833 178.709 272.253 177.839 272.42C176.968 272.586 176.068 272.492 175.251 272.149C174.433 271.806 173.736 271.229 173.245 270.491C172.754 269.753 172.493 268.886 172.493 268C172.493 267.114 172.754 266.247 173.245 265.509C173.736 264.771 174.433 264.194 175.251 263.851C176.068 263.508 176.968 263.414 177.839 263.58C178.709 263.747 179.511 264.167 180.144 264.787L186.769 260.537C186.389 259.495 186.408 258.349 186.819 257.319C187.231 256.289 188.008 255.447 189.002 254.954C189.996 254.461 191.136 254.351 192.206 254.645C193.275 254.94 194.199 255.618 194.8 256.55C195.401 257.483 195.637 258.604 195.464 259.7C195.291 260.795 194.72 261.789 193.86 262.49C193 263.191 191.913 263.551 190.804 263.501C189.696 263.451 188.645 262.995 187.853 262.219L181.228 266.475C181.586 267.464 181.586 268.548 181.228 269.537L187.853 273.794C188.485 273.175 189.286 272.756 190.155 272.59C191.025 272.424 191.924 272.518 192.74 272.86C193.556 273.202 194.253 273.777 194.744 274.514C195.235 275.25 195.498 276.115 195.5 277Z" fill="currentColor"/></svg></span></span><div><div class="h3">Exportación y difusión</div><div class="p">¿Qué sale de Power BI?</div><div class="chips"><span class="chip">ExportArtifact</span><span class="chip">ShareReport</span></div></div></div>
+    <div class="card fam"><span class="iconbox"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="299.38 185.38 27.24 30.24" aria-hidden="true"><path d="M323 196H319V193C319 191.409 318.368 189.883 317.243 188.757C316.117 187.632 314.591 187 313 187C311.409 187 309.883 187.632 308.757 188.757C307.632 189.883 307 191.409 307 193V196H303C302.47 196 301.961 196.211 301.586 196.586C301.211 196.961 301 197.47 301 198V212C301 212.53 301.211 213.039 301.586 213.414C301.961 213.789 302.47 214 303 214H323C323.53 214 324.039 213.789 324.414 213.414C324.789 213.039 325 212.53 325 212V198C325 197.47 324.789 196.961 324.414 196.586C324.039 196.211 323.53 196 323 196ZM314 205.829V209C314 209.265 313.895 209.52 313.707 209.707C313.52 209.895 313.265 210 313 210C312.735 210 312.48 209.895 312.293 209.707C312.105 209.52 312 209.265 312 209V205.829C311.333 205.593 310.77 205.129 310.412 204.518C310.054 203.908 309.924 203.191 310.043 202.493C310.163 201.796 310.525 201.163 311.066 200.707C311.607 200.251 312.292 200 313 200C313.708 200 314.393 200.251 314.934 200.707C315.475 201.163 315.837 201.796 315.957 202.493C316.076 203.191 315.946 203.908 315.588 204.518C315.23 205.129 314.667 205.593 314 205.829ZM317 196H309V193C309 191.939 309.421 190.922 310.172 190.172C310.922 189.421 311.939 189 313 189C314.061 189 315.078 189.421 315.828 190.172C316.579 190.922 317 191.939 317 193V196Z" fill="currentColor"/></svg></span></span><div><div class="h3">Espacios de trabajo y permisos</div><div class="p">¿Quién tiene acceso a qué?</div><div class="chips"><span class="chip">CreateWorkspace</span><span class="chip">UpdateWorkspaceAccess</span></div></div></div>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="425.44 183.42 29.13 29.16" aria-hidden="true"><path d="M439.618 210.924C439.435 210.848 439.279 210.72 439.169 210.556C439.059 210.391 439 210.198 439 210V205H429C428.47 205 427.961 204.789 427.586 204.414C427.211 204.039 427 203.53 427 203V193C427 192.47 427.211 191.961 427.586 191.586C427.961 191.211 428.47 191 429 191H439V186C439 185.802 439.058 185.609 439.168 185.444C439.278 185.279 439.434 185.151 439.617 185.075C439.8 185 440.001 184.98 440.195 185.019C440.389 185.057 440.568 185.153 440.708 185.293L452.708 197.293C452.8 197.385 452.874 197.496 452.925 197.617C452.975 197.739 453.001 197.869 453.001 198C453.001 198.131 452.975 198.262 452.925 198.383C452.874 198.504 452.8 198.615 452.708 198.708L440.708 210.708C440.568 210.847 440.389 210.943 440.195 210.981C440.001 211.02 439.8 211 439.618 210.924Z" fill="currentColor"/></svg></span></span></div>
+</section>
+
+<!-- 05 ARQUITECTURA -->
+<section class="slide dark s05">
+  <div class="top"><span class="kicker">04 · Diseño de solución</span><span class="count">05/09</span></div>
+  <h2 class="h1">Tres pasos <span class="grad">desatendidos</span></h2>
+  <div class="body center" style="gap:20px">
+    <div class="glass item"><span class="num">01</span><div><div class="h3">Extrae</div><div class="p">Un script programado descarga la actividad del día y pagina con el token de la API.</div></div></div>
+    <div class="glass item"><span class="num">02</span><div><div class="h3">Guarda</div><div class="p">Un fichero por día en Blob Storage o SharePoint.</div></div></div>
+    <div class="glass item"><span class="num">03</span><div><div class="h3">Modela</div><div class="p">Un modelo en estrella en Power BI, con actualización programada.</div></div></div>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo-negativo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="425.44 183.42 29.13 29.16" aria-hidden="true"><path d="M439.618 210.924C439.435 210.848 439.279 210.72 439.169 210.556C439.059 210.391 439 210.198 439 210V205H429C428.47 205 427.961 204.789 427.586 204.414C427.211 204.039 427 203.53 427 203V193C427 192.47 427.211 191.961 427.586 191.586C427.961 191.211 428.47 191 429 191H439V186C439 185.802 439.058 185.609 439.168 185.444C439.278 185.279 439.434 185.151 439.617 185.075C439.8 185 440.001 184.98 440.195 185.019C440.389 185.057 440.568 185.153 440.708 185.293L452.708 197.293C452.8 197.385 452.874 197.496 452.925 197.617C452.975 197.739 453.001 197.869 453.001 198C453.001 198.131 452.975 198.262 452.925 198.383C452.874 198.504 452.8 198.615 452.708 198.708L440.708 210.708C440.568 210.847 440.389 210.943 440.195 210.981C440.001 211.02 439.8 211 439.618 210.924Z" fill="currentColor"/></svg></span></span></div>
+</section>
+
+<!-- 06 CONTENIDO SIN USO -->
+<section class="slide light">
+  <div class="top"><span class="kicker">05 · Scanner API</span><span class="count">06/09</span></div>
+  <h2 class="h1">El log no muestra lo que <span class="grad">nadie abre</span></h2>
+  <div class="body center" style="gap:22px">
+    <div class="card usage"><span class="badge no">NO</span><div><div class="t">Usar solo el Activity Log como inventario</div><div class="d">Lo que nadie abre no aparece en él.</div></div></div>
+    <div class="card usage"><span class="badge yes">SÍ</span><div><div class="t">Cruzarlo con la Scanner API</div><div class="d">Lista todo el contenido, se use o no.</div></div></div>
+    <p class="note" style="font-size:30px;margin-top:10px">Así se localizan los espacios de trabajo y modelos sin uso.</p>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="425.44 183.42 29.13 29.16" aria-hidden="true"><path d="M439.618 210.924C439.435 210.848 439.279 210.72 439.169 210.556C439.059 210.391 439 210.198 439 210V205H429C428.47 205 427.961 204.789 427.586 204.414C427.211 204.039 427 203.53 427 203V193C427 192.47 427.211 191.961 427.586 191.586C427.961 191.211 428.47 191 429 191H439V186C439 185.802 439.058 185.609 439.168 185.444C439.278 185.279 439.434 185.151 439.617 185.075C439.8 185 440.001 184.98 440.195 185.019C440.389 185.057 440.568 185.153 440.708 185.293L452.708 197.293C452.8 197.385 452.874 197.496 452.925 197.617C452.975 197.739 453.001 197.869 453.001 198C453.001 198.131 452.975 198.262 452.925 198.383C452.874 198.504 452.8 198.615 452.708 198.708L440.708 210.708C440.568 210.847 440.389 210.943 440.195 210.981C440.001 211.02 439.8 211 439.618 210.924Z" fill="currentColor"/></svg></span></span></div>
+</section>
+
+<!-- 07 SEGMENTACIÓN -->
+<section class="slide dark s07">
+  <div class="top"><span class="kicker">06 · Segmentación</span><span class="count">07/09</span></div>
+  <h2 class="h1">Cuatro perfiles de <span class="grad">usuario</span></h2>
+  <div class="body center" style="gap:18px">
+    <div class="seg"><div class="rng" style="background:var(--coral-500);color:#fff">7 d</div><div class="txt"><div class="h3">Frecuente</div><div class="p">Actividad en los últimos 7 días o menos.</div></div></div>
+    <div class="seg"><div class="rng" style="background:var(--coral-400);color:#fff">8–30 d</div><div class="txt"><div class="h3">Ocasional</div><div class="p">Actividad entre 8 y 30 días.</div></div></div>
+    <div class="seg"><div class="rng" style="background:var(--coral-200);color:var(--neutrals-950)">31–90 d</div><div class="txt"><div class="h3">Dormido</div><div class="p">Sin actividad entre 31 y 90 días.</div></div></div>
+    <div class="seg"><div class="rng" style="background:var(--coral-100);color:var(--coral-500)">&gt; 90 d</div><div class="txt"><div class="h3">Inactivo</div><div class="p">Más de 90 días sin actividad, o nunca.</div></div></div>
+    <p class="note" style="margin-top:6px">Umbrales orientativos: ajústalos a cada organización.</p>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo-negativo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="425.44 183.42 29.13 29.16" aria-hidden="true"><path d="M439.618 210.924C439.435 210.848 439.279 210.72 439.169 210.556C439.059 210.391 439 210.198 439 210V205H429C428.47 205 427.961 204.789 427.586 204.414C427.211 204.039 427 203.53 427 203V193C427 192.47 427.211 191.961 427.586 191.586C427.961 191.211 428.47 191 429 191H439V186C439 185.802 439.058 185.609 439.168 185.444C439.278 185.279 439.434 185.151 439.617 185.075C439.8 185 440.001 184.98 440.195 185.019C440.389 185.057 440.568 185.153 440.708 185.293L452.708 197.293C452.8 197.385 452.874 197.496 452.925 197.617C452.975 197.739 453.001 197.869 453.001 198C453.001 198.131 452.975 198.262 452.925 198.383C452.874 198.504 452.8 198.615 452.708 198.708L440.708 210.708C440.568 210.847 440.389 210.943 440.195 210.981C440.001 211.02 439.8 211 439.618 210.924Z" fill="currentColor"/></svg></span></span></div>
+</section>
+
+<!-- 08 INDICADORES -->
+<section class="slide light">
+  <div class="top"><span class="kicker">07 · Indicadores</span><span class="count">08/09</span></div>
+  <h2 class="h1">Tres indicadores que <span class="grad">cambian decisiones</span></h2>
+  <div class="body center" style="gap:22px">
+    <div class="card kpi"><div class="h3">Espacios de trabajo sin uso</div><div class="formula"><span class="chip">0 visualizaciones en 60 días</span></div><div class="p">Para archivar o reasignar.</div></div>
+    <div class="card kpi"><div class="h3">Distribución por Apps</div><div class="formula"><span class="chip">vistas en Apps ÷ vistas totales</span></div><div class="p">Muestra si el consumo va por canales gestionados.</div></div>
+    <div class="card kpi"><div class="h3">Ratio de exportación</div><div class="formula"><span class="chip">ExportArtifact ÷ ViewReport</span></div><div class="p">Si sube, el informe no responde la pregunta.</div></div>
+    <p class="note">Propuestas de gestión, no un estándar de Microsoft.</p>
+  </div>
+  <div class="foot"><span class="brand"><img src="assets/logo/civica-isotipo.svg" alt="">Data Analytics · Tribu Power BI</span><span class="next">Desliza <span class="ico" style="width:28px;height:28px"><svg xmlns="http://www.w3.org/2000/svg" viewBox="425.44 183.42 29.13 29.16" aria-hidden="true"><path d="M439.618 210.924C439.435 210.848 439.279 210.72 439.169 210.556C439.059 210.391 439 210.198 439 210V205H429C428.47 205 427.961 204.789 427.586 204.414C427.211 204.039 427 203.53 427 203V193C427 192.47 427.211 191.961 427.586 191.586C427.961 191.211 428.47 191 429 191H439V186C439 185.802 439.058 185.609 439.168 185.444C439.278 185.279 439.434 185.151 439.617 185.075C439.8 185 440.001 184.98 440.195 185.019C440.389 185.057 440.568 185.153 440.708 185.293L452.708 197.293C452.8 197.385 452.874 197.496 452.925 197.617C452.975 197.739 453.001 197.869 453.001 198C453.001 198.131 452.975 198.262 452.925 198.383C452.874 198.504 452.8 198.615 452.708 198.708L440.708 210.708C440.568 210.847 440.389 210.943 440.195 210.981C440.001 211.02 439.8 211 439.618 210.924Z" fill="currentColor"/></svg></span></span></div>
+</section>
+
+<!-- 09 PARA EMPEZAR (CIERRE) -->
+<section class="slide dark s09">
+  <div class="top"><span class="kicker">08 · Próximos pasos</span><span class="count">09/09</span></div>
+  <h2 class="h1">Para empezar, <span class="grad">una pregunta</span></h2>
+  <div class="body" style="gap:26px;margin-top:40px">
+    <div class="glass" style="padding:36px 40px"><div style="font:800 52px/1.15 var(--font-display);letter-spacing:-.01em">¿Cuántas licencias llevan más de 90 días sin actividad?</div></div>
+    <div class="glass" style="padding:14px 36px 16px">
+      <div class="check"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="235.50 189.50 27.00 28.01" aria-hidden="true"><path d="M259 191H239C238.47 191 237.961 191.211 237.586 191.586C237.211 191.961 237 192.47 237 193V200C237 206.59 240.19 210.584 242.866 212.774C245.749 215.131 248.616 215.931 248.741 215.965C248.913 216.012 249.094 216.012 249.266 215.965C249.391 215.931 252.255 215.131 255.141 212.774C257.81 210.584 261 206.59 261 200V193C261 192.47 260.789 191.961 260.414 191.586C260.039 191.211 259.53 191 259 191ZM254.71 199.708L247.71 206.708C247.617 206.8 247.507 206.874 247.385 206.925C247.264 206.975 247.134 207.001 247.002 207.001C246.871 207.001 246.741 206.975 246.62 206.925C246.498 206.874 246.388 206.8 246.295 206.708L243.295 203.708C243.107 203.52 243.002 203.265 243.002 203C243.002 202.735 243.107 202.48 243.295 202.292C243.483 202.105 243.737 201.999 244.002 201.999C244.268 201.999 244.522 202.105 244.71 202.292L247 204.586L253.292 198.292C253.385 198.2 253.496 198.126 253.617 198.076C253.738 198.025 253.869 197.999 254 197.999C254.131 197.999 254.262 198.025 254.383 198.076C254.504 198.126 254.615 198.2 254.708 198.292C254.8 198.385 254.874 198.496 254.924 198.617C254.975 198.738 255.001 198.869 255.001 199C255.001 199.131 254.975 199.262 254.924 199.383C254.874 199.504 254.8 199.615 254.708 199.708H254.71Z" fill="currentColor"/></svg></span> Activar el acceso de solo lectura para entidades de servicio</div>
+      <div class="check"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="179.17 240.42 29.40 29.40" aria-hidden="true"><path d="M194 242C191.429 242 188.915 242.762 186.778 244.191C184.64 245.619 182.974 247.65 181.99 250.025C181.006 252.401 180.748 255.014 181.25 257.536C181.751 260.058 182.99 262.374 184.808 264.192C186.626 266.01 188.942 267.249 191.464 267.75C193.986 268.252 196.599 267.994 198.975 267.01C201.35 266.026 203.381 264.36 204.809 262.222C206.238 260.085 207 257.571 207 255C206.996 251.553 205.626 248.249 203.188 245.812C200.751 243.374 197.447 242.004 194 242ZM201 256H194C193.735 256 193.48 255.895 193.293 255.707C193.105 255.52 193 255.265 193 255V248C193 247.735 193.105 247.48 193.293 247.293C193.48 247.105 193.735 247 194 247C194.265 247 194.52 247.105 194.707 247.293C194.895 247.48 195 247.735 195 248V254H201C201.265 254 201.52 254.105 201.707 254.293C201.895 254.48 202 254.735 202 255C202 255.265 201.895 255.52 201.707 255.707C201.52 255.895 201.265 256 201 256Z" fill="currentColor"/></svg></span> Programar la extracción diaria del Activity Log</div>
+      <div class="check"><span class="ico"><svg xmlns="http://www.w3.org/2000/svg" viewBox="192.41 93.85 29.27 28.32" aria-hidden="true"><path d="M216 111.5C215.116 111.5 214.257 111.793 213.559 112.335L210.67 110.085C210.888 109.585 211 109.045 211 108.5C211 108.407 211 108.315 210.99 108.224L212.644 107.672C213.167 108.479 213.963 109.071 214.887 109.338C215.811 109.606 216.8 109.532 217.673 109.129C218.547 108.727 219.246 108.024 219.643 107.148C220.04 106.272 220.108 105.282 219.835 104.36C219.562 103.438 218.966 102.645 218.155 102.127C217.345 101.609 216.376 101.4 215.424 101.538C214.472 101.677 213.602 102.153 212.973 102.881C212.345 103.608 211.999 104.538 212 105.5C212 105.592 212 105.685 212.01 105.776L210.356 106.327C209.994 105.767 209.497 105.306 208.91 104.987C208.324 104.668 207.667 104.5 207 104.5C206.779 104.5 206.559 104.519 206.341 104.555L205.486 102.625C206.224 102.035 206.73 101.203 206.913 100.276C207.097 99.3488 206.946 98.3868 206.487 97.5603C206.029 96.7339 205.293 96.0964 204.41 95.7607C203.526 95.4251 202.553 95.4131 201.661 95.7268C200.77 96.0406 200.018 96.6597 199.54 97.4746C199.061 98.2895 198.887 99.2475 199.047 100.179C199.208 101.11 199.693 101.955 200.416 102.562C201.14 103.17 202.055 103.503 203 103.5C203.221 103.5 203.441 103.481 203.659 103.445L204.514 105.37C203.789 105.944 203.285 106.752 203.09 107.655C202.895 108.559 203.019 109.503 203.442 110.325L200.229 113.18C199.42 112.635 198.44 112.403 197.473 112.529C196.505 112.654 195.617 113.128 194.974 113.862C194.332 114.596 193.978 115.538 193.981 116.514C193.984 117.489 194.342 118.43 194.989 119.16C195.635 119.89 196.526 120.36 197.494 120.48C198.462 120.6 199.441 120.363 200.247 119.814C201.052 119.264 201.63 118.439 201.871 117.494C202.113 116.549 202.001 115.549 201.557 114.68L204.771 111.825C205.467 112.294 206.293 112.531 207.131 112.503C207.97 112.475 208.778 112.184 209.441 111.67L212.33 113.92C212.112 114.418 212 114.956 212 115.5C212 116.291 212.234 117.064 212.674 117.722C213.114 118.38 213.738 118.893 214.469 119.196C215.2 119.498 216.004 119.577 216.78 119.423C217.556 119.269 218.269 118.888 218.828 118.328C219.388 117.769 219.769 117.056 219.923 116.28C220.077 115.504 219.998 114.7 219.695 113.969C219.393 113.238 218.88 112.614 218.222 112.174C217.564 111.735 216.791 111.5 216 111.5ZM216 103.5C216.395 103.5 216.782 103.617 217.111 103.837C217.44 104.057 217.696 104.369 217.848 104.735C217.999 105.1 218.039 105.502 217.961 105.89C217.884 106.278 217.694 106.634 217.414 106.914C217.134 107.194 216.778 107.384 216.39 107.462C216.002 107.539 215.6 107.499 215.234 107.348C214.869 107.196 214.557 106.94 214.337 106.611C214.117 106.282 214 105.896 214 105.5C214 104.97 214.211 104.461 214.586 104.086C214.961 103.711 215.469 103.5 216 103.5ZM201 99.5C201 99.1044 201.117 98.7177 201.337 98.3888C201.557 98.0599 201.869 97.8036 202.234 97.6522C202.6 97.5009 203.002 97.4612 203.39 97.5384C203.778 97.6156 204.134 97.8061 204.414 98.0858C204.694 98.3655 204.884 98.7218 204.961 99.1098C205.039 99.4978 204.999 99.8999 204.848 100.265C204.696 100.631 204.44 100.943 204.111 101.163C203.782 101.383 203.395 101.5 203 101.5C202.469 101.5 201.961 101.289 201.586 100.914C201.211 100.539 201 100.03 201 99.5ZM198 118.5C197.604 118.5 197.218 118.383 196.889 118.163C196.56 117.943 196.303 117.631 196.152 117.265C196.001 116.9 195.961 116.498 196.038 116.11C196.115 115.722 196.306 115.365 196.586 115.086C196.865 114.806 197.222 114.616 197.61 114.538C197.998 114.461 198.4 114.501 198.765 114.652C199.131 114.804 199.443 115.06 199.663 115.389C199.883 115.718 200 116.104 200 116.5C200 117.03 199.789 117.539 199.414 117.914C199.039 118.289 198.53 118.5 198 118.5ZM216 117.5C215.604 117.5 215.218 117.383 214.889 117.163C214.56 116.943 214.303 116.631 214.152 116.265C214.001 115.9 213.961 115.498 214.038 115.11C214.115 114.722 214.306 114.365 214.586 114.086C214.865 113.806 215.222 113.616 215.61 113.538C215.998 113.461 216.4 113.501 216.765 113.652C217.131 113.804 217.443 114.06 217.663 114.389C217.883 114.718 218 115.104 218 115.5C218 116.03 217.789 116.539 217.414 116.914C217.039 117.289 216.53 117.5 216 117.5Z" fill="currentColor"/></svg></span> Cruzarlo con la Scanner API y Microsoft Graph</div>
+    </div>
+    <p class="note" style="font-size:22px">Referencias: Track user activities in Power BI · Metadata scanning overview · Admin - Get Activity Events</p>
+  </div>
+  <div class="foot" style="margin-top:28px">
+    <span class="brand"><img src="assets/logo/civica-isotipo-negativo.svg" alt="">Data Analytics · Tribu Power BI</span>
+    <img class="logo" src="assets/logo/civica-negativo.svg" alt="Cívica · People Beyond Tech">
+  </div>
+</section>
+
+<script>
+  var n = new URLSearchParams(location.search).get('n');
+  if (n) document.querySelectorAll('.slide').forEach(function(s,i){ if (i+1 !== +n) s.remove(); });
+</script>
+</body>
+</html>
